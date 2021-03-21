@@ -1,0 +1,455 @@
+1,3c1
+< #include <stdio.h>
+< #include <stdlib.h>
+< #include <stdint.h>
+---
+> #include "core.h"
+5,31d2
+< typedef struct Flags
+< {
+< 	uint8_t z : 1;
+< 	uint8_t s : 1;
+< 	uint8_t p : 1;
+< 	uint8_t cy : 1;
+< 	uint8_t ac : 1;
+< 	uint8_t pad : 3;
+< } Flags;
+< 
+< Flags CC_ZSPAC = {0, 0, 0, 0, 0};
+< 
+< typedef struct State8085
+< {
+< 	uint8_t a;
+< 	uint8_t b;
+< 	uint8_t c;
+< 	uint8_t d;
+< 	uint8_t e;
+< 	uint8_t h;
+< 	uint8_t l;
+< 	uint16_t sp;
+< 	uint16_t pc;
+< 	struct Flags cc;
+< 	uint8_t int_enable;
+< 	uint8_t *memory;
+< } State8085;
+47c18,19
+< int Disassemble8085Op(unsigned char *codebuffer, int pc)
+---
+> 
+> int Disassemble8085Op(uint8_t *codebuffer, int pc)
+49c21
+< 	unsigned char *code = &codebuffer[pc];
+---
+> 	uint8_t *code = &codebuffer[pc];
+51c23
+< 	printf("%04x ", pc);
+---
+> 	printf("%04hX ", pc);
+58c30
+< 		printf("LXI    B,#$%02x%02x", code[2], code[1]);
+---
+> 		printf("LXI    B,#$%02hhX%02hhX", code[2], code[1]);
+74c46
+< 		printf("MVI    B,#$%02x", code[1]);
+---
+> 		printf("MVI    B,#$%02hhX", code[1]);
+99c71
+< 		printf("MVI    C,#$%02x", code[1]);
+---
+> 		printf("MVI    C,#$%02hhX", code[1]);
+110c82
+< 		printf("LXI    D,#$%02x%02x", code[2], code[1]);
+---
+> 		printf("LXI    D,#$%02hhX%02hhX", code[2], code[1]);
+126c98
+< 		printf("MVI    D,#$%02x", code[1]);
+---
+> 		printf("MVI    D,#$%02hhX", code[1]);
+151c123
+< 		printf("MVI    E,#$%02x", code[1]);
+---
+> 		printf("MVI    E,#$%02hhX", code[1]);
+162c134
+< 		printf("LXI    H,#$%02x%02x", code[2], code[1]);
+---
+> 		printf("LXI    H,#$%02hhX%02hhX", code[2], code[1]);
+166c138
+< 		printf("SHLD   $%02x%02x", code[2], code[1]);
+---
+> 		printf("SHLD   $%02hhX%02hhX", code[2], code[1]);
+179c151
+< 		printf("MVI    H,#$%02x", code[1]);
+---
+> 		printf("MVI    H,#$%02hhX", code[1]);
+192c164
+< 		printf("LHLD   $%02x%02x", code[2], code[1]);
+---
+> 		printf("LHLD   $%02hhX%02hhX", code[2], code[1]);
+205c177
+< 		printf("MVI    L,#$%02x", code[1]);
+---
+> 		printf("MVI    L,#$%02hhX", code[1]);
+216c188
+< 		printf("LXI    SP,#$%02x%02x", code[2], code[1]);
+---
+> 		printf("LXI    SP,#$%02hhX%02hhX", code[2], code[1]);
+220c192
+< 		printf("STA    $%02x%02x", code[2], code[1]);
+---
+> 		printf("STA    $%02hhX%02hhX", code[2], code[1]);
+233c205
+< 		printf("MVI    M,#$%02x", code[1]);
+---
+> 		printf("MVI    M,#$%02hhX", code[1]);
+246c218
+< 		printf("LDA    $%02x%02x", code[2], code[1]);
+---
+> 		printf("LDA    $%02hhX%02hhX", code[2], code[1]);
+259c231
+< 		printf("MVI    A,#$%02x", code[1]);
+---
+> 		printf("MVI    A,#$%02hhX", code[1]);
+665c637
+< 		printf("JNZ    $%02x%02x", code[2], code[1]);
+---
+> 		printf("JNZ    $%02hhX%02hhX", code[2], code[1]);
+669c641
+< 		printf("JMP    $%02x%02x", code[2], code[1]);
+---
+> 		printf("JMP    $%02hhX%02hhX", code[2], code[1]);
+673c645
+< 		printf("CNZ    $%02x%02x", code[2], code[1]);
+---
+> 		printf("CNZ    $%02hhX%02hhX", code[2], code[1]);
+680c652
+< 		printf("ADI    #$%02x", code[1]);
+---
+> 		printf("ADI    #$%02hhX", code[1]);
+693c665
+< 		printf("JZ     $%02x%02x", code[2], code[1]);
+---
+> 		printf("JZ     $%02hhX%02hhX", code[2], code[1]);
+697c669
+< 		printf("JMP    $%02x%02x", code[2], code[1]);
+---
+> 		printf("JMP    $%02hhX%02hhX", code[2], code[1]);
+701c673
+< 		printf("CZ     $%02x%02x", code[2], code[1]);
+---
+> 		printf("CZ     $%02hhX%02hhX", code[2], code[1]);
+705c677
+< 		printf("CALL   $%02x%02x", code[2], code[1]);
+---
+> 		printf("CALL   $%02hhX%02hhX", code[2], code[1]);
+709c681
+< 		printf("ACI    #$%02x", code[1]);
+---
+> 		printf("ACI    #$%02hhX", code[1]);
+723c695
+< 		printf("JNC    $%02x%02x", code[2], code[1]);
+---
+> 		printf("JNC    $%02hhX%02hhX", code[2], code[1]);
+727c699
+< 		printf("OUT    #$%02x", code[1]);
+---
+> 		printf("OUT    #$%02hhX", code[1]);
+731c703
+< 		printf("CNC    $%02x%02x", code[2], code[1]);
+---
+> 		printf("CNC    $%02hhX%02hhX", code[2], code[1]);
+738c710
+< 		printf("SUI    #$%02x", code[1]);
+---
+> 		printf("SUI    #$%02hhX", code[1]);
+751c723
+< 		printf("JC     $%02x%02x", code[2], code[1]);
+---
+> 		printf("JC     $%02hhX%02hhX", code[2], code[1]);
+755c727
+< 		printf("IN     #$%02x", code[1]);
+---
+> 		printf("IN     #$%02hhX", code[1]);
+759c731
+< 		printf("CC     $%02x%02x", code[2], code[1]);
+---
+> 		printf("CC     $%02hhX%02hhX", code[2], code[1]);
+763c735
+< 		printf("CALL   $%02x%02x", code[2], code[1]);
+---
+> 		printf("CALL   $%02hhX%02hhX", code[2], code[1]);
+767c739
+< 		printf("SBI    #$%02x", code[1]);
+---
+> 		printf("SBI    #$%02hhX", code[1]);
+781c753
+< 		printf("JPO    $%02x%02x", code[2], code[1]);
+---
+> 		printf("JPO    $%02hhX%02hhX", code[2], code[1]);
+788c760
+< 		printf("CPO    $%02x%02x", code[2], code[1]);
+---
+> 		printf("CPO    $%02hhX%02hhX", code[2], code[1]);
+795c767
+< 		printf("ANI    #$%02x", code[1]);
+---
+> 		printf("ANI    #$%02hhX", code[1]);
+808c780
+< 		printf("JPE    $%02x%02x", code[2], code[1]);
+---
+> 		printf("JPE    $%02hhX%02hhX", code[2], code[1]);
+815c787
+< 		printf("CPE     $%02x%02x", code[2], code[1]);
+---
+> 		printf("CPE     $%02hhX%02hhX", code[2], code[1]);
+819c791
+< 		printf("CALL   $%02x%02x", code[2], code[1]);
+---
+> 		printf("CALL   $%02hhX%02hhX", code[2], code[1]);
+823c795
+< 		printf("XRI    #$%02x", code[1]);
+---
+> 		printf("XRI    #$%02hhX", code[1]);
+837c809
+< 		printf("JP     $%02x%02x", code[2], code[1]);
+---
+> 		printf("JP     $%02hhX%02hhX", code[2], code[1]);
+844c816
+< 		printf("CP     $%02x%02x", code[2], code[1]);
+---
+> 		printf("CP     $%02hhX%02hhX", code[2], code[1]);
+851c823
+< 		printf("ORI    #$%02x", code[1]);
+---
+> 		printf("ORI    #$%02hhX", code[1]);
+864c836
+< 		printf("JM     $%02x%02x", code[2], code[1]);
+---
+> 		printf("JM     $%02hhX%02hhX", code[2], code[1]);
+871c843
+< 		printf("CM     $%02x%02x", code[2], code[1]);
+---
+> 		printf("CM     $%02hhX%02hhX", code[2], code[1]);
+875c847
+< 		printf("CALL   $%02x%02x", code[2], code[1]);
+---
+> 		printf("CALL   $%02hhX%02hhX", code[2], code[1]);
+879c851
+< 		printf("CPI    #$%02x", code[1]);
+---
+> 		printf("CPI    #$%02hhX", code[1]);
+890,891d861
+< typedef enum { PRESERVE_CARRY, UPDATE_CARRY } should_preserve_carry;
+< 
+915,916c885,886
+< 	Disassemble8085Op(state->memory, state->pc);
+< 	printf("\n");
+---
+> 	//Disassemble8085Op(state->memory, state->pc);
+> 	// printf("\n");
+976a947
+> 
+979,982c950,955
+< 	int cycles = 4;
+< 	unsigned char *opcode = &state->memory[state->pc];
+< 	printf("Emulating instruction at %d\n", state->pc);
+< 	printf("Emulating instruction %d\n", state->memory[state->pc]);
+---
+> 	// int cycles = 4;
+> 	uint8_t *opcode = &state->memory[state->pc];
+> 	//printf("\nEmulating instruction at %x .\t\t", state->pc);
+> 	printf("Emulating [%04x] : %02x\t|\t",state->pc, state->memory[state->pc]);
+> 	Disassemble8085Op(state->memory, state->pc);
+> 	putchar('\n');
+986c959
+< 	//Disassemble8085Op(state->memory, state->pc);
+---
+> 	
+1801c1774
+< 			state->pc = offset + ((opcode[2] << 8) | opcode[1]);
+---
+> 			state->pc = /*offset +*/((opcode[2] << 8) | opcode[1]);
+1806c1779
+< 		state->pc = offset + ((opcode[2] << 8) | opcode[1]);
+---
+> 		state->pc = /*offset +*/ ((opcode[2] << 8) | opcode[1]);
+1850c1823
+< 			state->pc = offset + ((opcode[2] << 8) | opcode[1]);
+---
+> 			state->pc = /*offset +*/ ((opcode[2] << 8) | opcode[1]);
+1886c1859
+< 			state->pc = offset + ((opcode[2] << 8) | opcode[1]);
+---
+> 			state->pc = /*offset +*/ ((opcode[2] << 8) | opcode[1]);
+1923c1896
+< 			state->pc = offset + ((opcode[2] << 8) | opcode[1]);
+---
+> 			state->pc = /*offset*/ + ((opcode[2] << 8) | opcode[1]);
+1959c1932
+< 			state->pc = offset + ((opcode[2] << 8) | opcode[1]);
+---
+> 			state->pc = /*offset +*/ ((opcode[2] << 8) | opcode[1]);
+2005c1978
+< 			state->pc = offset + ((opcode[2] << 8) | opcode[1]);
+---
+> 			state->pc = /*offset +*/((opcode[2] << 8) | opcode[1]);
+2054c2027
+< 			state->pc = offset + ((opcode[2] << 8) | opcode[1]);
+---
+> 			state->pc = /*offset +*/ ((opcode[2] << 8) | opcode[1]);
+2096c2069
+< 			state->pc = offset + ((opcode[2] << 8) | opcode[1]);
+---
+> 			state->pc = /*offset +*/ ((opcode[2] << 8) | opcode[1]);
+2127,2128c2100,2103
+< 	/*
+< 	printf("\t");
+---
+> 
+> 	if(perLineExec){
+> 	
+> 	printf(" ____________________________________\n|Flag status (. means reset) :");
+2134,2136c2109,2116
+< 	printf("A $%02x B $%02x C $%02x D $%02x E $%02x H $%02x L $%02x SP %04x\n", state->a, state->b, state->c,
+< 				state->d, state->e, state->h, state->l, state->sp);
+< 	*/
+---
+> 	putchar('|');
+> 	printf("\n***********************************************************************\n");
+> 	printf("* A %02hhX | B C : %02hhX %02hhX | D E : %02hhX  %02hhX | H L : %02hhX %02hhX | SP %04hX | PC %04hX *", 
+> 		state->a, state->b, state->c, state->d, state->e, state->h, state->l, state->sp, state->pc);
+> 	printf("\n***********************************************************************\n");
+> 
+> 	getchar();
+> 	}
+2139a2120
+> 
+2142,2143c2123,2124
+< 	State8085 *state = calloc(1, sizeof(State8085));
+< 	state->memory = malloc(0x10000); //16K
+---
+> 	State8085 *state = (State8085*) calloc(1, sizeof(State8085));
+> 	state->memory = (uint8_t*) malloc(0x10000); //16K
+2148,2160d2128
+< State8085 *LoadProgram(State8085 *state, uint8_t *lines, int len, uint16_t offset)
+< {
+< 	int i = 0;
+< 	while (i < len)
+< 	{
+< 		printf("line %d %u\n", i, lines[i]);
+< 		state->memory[offset + i] = lines[i];
+< 		i++;
+< 	}
+< 	printf("Offset %u\n", offset);
+< 	printf("Memory at offset %u\n", state->memory[offset]);
+< 	return state;
+< }
+2162,2174c2130,2144
+< int ExecuteProgramUntil(State8085 *state, uint16_t offset, uint16_t startAt, uint16_t pauseAt)
+< {
+< 	int done = 0;
+< 	printf("Start At: %d\n", startAt);
+< 	printf("Offset: %d\n", offset);
+< 	if(offset == startAt)
+< 		state->sp = 0xFFFF;
+< 	state->pc = startAt;
+< 	printf("Pause At: %d\n", pauseAt);
+< 	while (done == 0 && state->pc < pauseAt)
+< 	{
+< 		done = Emulate8085Op(state, offset);
+< 		printf("PC in C %d", state->pc);
+---
+> void LoadProgram(State8085 *state, char* file, uint16_t offset){
+> 	uint8_t opcode;
+> 	
+> 
+> 	FILE *fp = fopen(file,"r");
+> 	while (!feof(fp)){
+> 		fscanf(fp,"@%04hX\n",&offset);
+> 		
+> 		int i = 0;
+> 
+> 		while(fscanf(fp,"%02hhX\n",&opcode)!=-1){
+> 			printf("%04hX  %02hhX\n",offset+i,opcode);
+> 			state->memory[offset + i] = opcode;
+> 			i++;
+> 		}
+2176,2183c2146
+< 	printf("%c", state->cc.z ? 'z' : '.');
+< 	printf("%c", state->cc.s ? 's' : '.');
+< 	printf("%c", state->cc.p ? 'p' : '.');
+< 	printf("%c", state->cc.cy ? 'c' : '.');
+< 	printf("%c  ", state->cc.ac ? 'a' : '.');
+< 	printf("A $%02x B $%02x C $%02x D $%02x E $%02x H $%02x L $%02x SP %04x PC %04x\n", state->a, state->b, state->c,
+< 		   state->d, state->e, state->h, state->l, state->sp, state->pc);
+< 	return done;
+---
+> 	fclose(fp);
+2186c2149
+< State8085 *ExecuteProgram(State8085 *state, uint16_t offset)
+---
+> State8085 *ExecuteProgram(State8085 *state)//offset is the starting address
+2191,2192c2154,2157
+< 	printf("State Ptr: %p, SP Ptr: %p\n", state, &state->sp);
+< 	printf("Offset %u\n", offset);
+---
+> 	uint16_t offset;
+> 	printf("Enter the starting address : ");
+> 	scanf("%04hX",&offset);
+> 
+2195,2196d2159
+< 	printf("Memory at offset %u\n", state->memory[offset]);
+< 	printf("Memory at offset + 1 %u\n", state->memory[offset + 1]);
+2202a2166
+> 		//getchar();
+2204a2169,2171
+> 	if(cycles > 10000)printf("*INFINITE LOOPING*\n");
+> 
+> 	printf(" ____________________________________\n|Flag status (. means reset) :");
+2210,2211c2177,2181
+< 	printf("A $%02x B $%02x C $%02x D $%02x E $%02x H $%02x L $%02x SP %04x PC %04x\n", state->a, state->b, state->c,
+< 		   state->d, state->e, state->h, state->l, state->sp, state->pc);
+---
+> 	putchar('|');
+> 	printf("\n***********************************************************************\n");
+> 	printf("* A %02hhX | B C : %02hhX %02hhX | D E : %02hhX  %02hhX | H L : %02hhX %02hhX | SP %04hX | PC %04hX *", 
+> 		state->a, state->b, state->c, state->d, state->e, state->h, state->l, state->sp, state->pc);
+> 	printf("\n***********************************************************************\n");
+2212a2183,2220
+> }
+> 
+> void free_allocated_mem(State8085 *state){
+> 	free(state->memory);
+> 	free(state);
+> }
+> 
+> void mem_write(State8085 *state){
+> 	uint8_t op_val = 0;
+> 	uint16_t inp_mem;
+> 	printf("Enter Starting addr : ");
+> 		scanf("%04hX", &inp_mem);
+> 			
+> 	while(op_val != 0xFF){
+> 		scanf("%02hhX",&op_val);
+> 		if(op_val != 0xFF)
+> 			state->memory[inp_mem] = op_val;
+> 		inp_mem++;
+> 	}
+> }
+> 
+> void mem_read(State8085 *state){
+> 	//uint8_t op_val;
+> 	uint16_t out_mem;
+> 
+> 	printf("Enter Starting addr ('X' to exit memory read): ");
+> 		scanf("%04hX", &out_mem);
+> 
+> 	while(1){
+> 		char c = getchar();
+> 		printf("[%04hX] = %02hhX", out_mem, state->memory[out_mem]);
+> 		out_mem++;
+> 
+> 		if(c == 'X'){
+> 			fflush(stdout);
+> 			return;
+> 		}
+> 	}
